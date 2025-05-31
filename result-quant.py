@@ -111,6 +111,7 @@ def main():
 
     warmup_prompt = "Explain what AI is."
     inputs = tokenizer(warmup_prompt, return_tensors="pt").to(device)
+
     input_ids = inputs["input_ids"]
     attention_mask = inputs["attention_mask"]
 
