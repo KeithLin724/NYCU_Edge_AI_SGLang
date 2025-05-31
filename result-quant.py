@@ -5,6 +5,7 @@ from tqdm.auto import tqdm
 from datasets import load_dataset
 import random
 import numpy as np
+from SGLangModel import SgLangModel
 
 #####################################################################
 # === SPEC NOTICE ===
@@ -94,19 +95,26 @@ def main():
 
     ### === TODO: Load your model (you may change this part) ===
     model_name = "./Llama-3.2-3B-Instruct-W8A8-Dynamic-Per-Token-One"
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        # device_map="auto",
-        device_map=device,
-        # torch_dtype="auto",
-    )
-    print(model.dtype)
+    sg_lang_model = SgLangModel(model_name=model_name)
+
+    # model = AutoModelForCausalLM.from_pretrained(
+    #     model_name,
+    #     # device_map="auto",
+    #     device_map=device,
+    #     # torch_dtype="auto",
+    # )
+    # print(model.dtype)
+
+    model, tokenizer = sg_lang_model.build_raw_model(device_map=device)
+    print(model)
+
     #####################################
 
     model.eval()
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    # tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     # === (Optional) Uncomment the following lines if using the custom generate() function. ===
+    # model.forward = torch.compile(model.forward)
     # model.prefill_forward = model.forward
 
     warmup_prompt = "Explain what AI is."
@@ -139,63 +147,63 @@ def main():
         # generated = generate(model, input_ids, past_key_values, max_new_tokens)
         # past_key_values.reset()
 
-    prompt = "How to learn a new language?"
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
-    input_ids = inputs["input_ids"]
-    attention_mask = inputs["attention_mask"]
-    tputs = []
-    time_record = []
-    for _ in tqdm(range(10), desc="Test Inference"):
-        torch.cuda.synchronize()
-        start = torch.cuda.Event(enable_timing=True)
-        end = torch.cuda.Event(enable_timing=True)
-        start.record()
+    # prompt = "How to learn a new language?"
+    # inputs = tokenizer(prompt, return_tensors="pt").to(device)
+    # input_ids = inputs["input_ids"]
+    # attention_mask = inputs["attention_mask"]
+    # tputs = []
+    # time_record = []
+    # for _ in tqdm(range(10), desc="Test Inference"):
+    #     torch.cuda.synchronize()
+    #     start = torch.cuda.Event(enable_timing=True)
+    #     end = torch.cuda.Event(enable_timing=True)
+    #     start.record()
 
-        # === Default: Use model.generate() for end-to-end timing ===
-        generated = model.generate(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            max_new_tokens=max_new_tokens,
-            pad_token_id=tokenizer.eos_token_id,
-        )
+    #     # === Default: Use model.generate() for end-to-end timing ===
+    #     generated = model.generate(
+    #         input_ids=input_ids,
+    #         attention_mask=attention_mask,
+    #         max_new_tokens=max_new_tokens,
+    #         pad_token_id=tokenizer.eos_token_id,
+    #     )
 
-        # === Optional: Use custom generate() if uncommented ===
-        # generated = generate(model, input_ids, past_key_values, max_new_tokens)
-        # past_key_values.reset()
+    #     # === Optional: Use custom generate() if uncommented ===
+    #     # generated = generate(model, input_ids, past_key_values, max_new_tokens)
+    #     # past_key_values.reset()
 
-        end.record()
-        torch.cuda.synchronize()
-        elapsed_ms = start.elapsed_time(end)
-        tput = max_new_tokens / (elapsed_ms / 1000)
-        time_record.append(elapsed_ms / 1000)
-        tputs.append(tput)
+    #     end.record()
+    #     torch.cuda.synchronize()
+    #     elapsed_ms = start.elapsed_time(end)
+    #     tput = max_new_tokens / (elapsed_ms / 1000)
+    #     time_record.append(elapsed_ms / 1000)
+    #     tputs.append(tput)
 
-    response = tokenizer.decode(
-        generated[0][input_ids.shape[1] :], skip_special_tokens=True
-    )
-    sorted_tputs = np.sort(tputs)[2:-2]
-    org_tput = np.mean(sorted_tputs)
-    print(f"Prompt: {prompt}\nResponse: {response}\n")
+    # response = tokenizer.decode(
+    #     generated[0][input_ids.shape[1] :], skip_special_tokens=True
+    # )
+    # sorted_tputs = np.sort(tputs)[2:-2]
+    # org_tput = np.mean(sorted_tputs)
+    # print(f"Prompt: {prompt}\nResponse: {response}\n")
 
-    print(f"Time Record: {time_record}")
-    print(f"Throughput Record: {tputs} toks/s\n")
+    # print(f"Time Record: {time_record}")
+    # print(f"Throughput Record: {tputs} toks/s\n")
 
-    ### Your final throughput result ###
-    print(f"Throughput: {org_tput} toks/s")
+    # ### Your final throughput result ###
+    # print(f"Throughput: {org_tput} toks/s")
     ppl = evaluate_ppl(model, tokenizer, device)
     print(f"Perplexity (PPL): {ppl}")
 
     # Save results to CSV
-    import csv
+    # import csv
 
-    rounded_tput = round(org_tput, 1)
-    ppl = round(ppl, 2)
+    # rounded_tput = round(org_tput, 1)
+    # ppl = round(ppl, 2)
 
-    with open("result.csv", mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Id", "value"])
-        writer.writerow([0, ppl])
-        writer.writerow([1, rounded_tput])
+    # with open("result.csv", mode="w", newline="") as file:
+    #     writer = csv.writer(file)
+    #     writer.writerow(["Id", "value"])
+    #     writer.writerow([0, ppl])
+    #     writer.writerow([1, rounded_tput])
 
 
 if __name__ == "__main__":
