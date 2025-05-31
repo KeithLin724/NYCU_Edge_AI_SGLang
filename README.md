@@ -62,3 +62,10 @@ python result-quant.py
 ---
 
 For any questions, please open an issue or contact the project maintainer.
+
+## Reference
+
+- [SG-Lang](https://docs.sglang.ai/)
+- [SG-Lang Github](https://github.com/sgl-project/sglang?tab=readme-ov-file)
+- [SGLang 推理引擎技术解析](https://zhuanlan.zhihu.com/p/30886364337)
+- [llm-compressor](https://github.com/vllm-project/llm-compressor/tree/main)
