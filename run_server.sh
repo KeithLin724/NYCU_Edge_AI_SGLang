@@ -10,7 +10,7 @@ python3 -m sglang.launch_server --model-path Llama-3.2-3B-Instruct-W8A8-Dynamic-
  --enable-torch-compile \
  --attention-backend flashinfer \
  --enable-mixed-chunk \
- --schedule-policy fcfs --schedule-conservativeness 0.8
+ --schedule-policy lpm --schedule-conservativeness 0.8
 
 
 
