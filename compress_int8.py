@@ -83,11 +83,13 @@ oneshot(
     recipe=recipe,
     max_seq_length=MAX_SEQUENCE_LENGTH,
     num_calibration_samples=len(ds),
+    output_dir=MODEL_ID.split("/")[1]
+    + "-W8A8-Dynamic-Per-Token-One",  # No need to save the model yet
 )
 # %%
 # Save to disk compressed.
-SAVE_DIR = MODEL_ID.split("/")[1] + "-W8A8-Dynamic-Per-Token"
-model.save_pretrained(SAVE_DIR, save_compressed=True)
+SAVE_DIR = MODEL_ID.split("/")[1] + "-W8A8-Dynamic-Per-Token-V2"
 tokenizer.save_pretrained(SAVE_DIR)
+model.save_pretrained(SAVE_DIR, save_compressed=True)
 
 # %%
