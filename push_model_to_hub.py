@@ -6,7 +6,7 @@ from SGLangModel import SgLangModel
 # 首先登入 (只需要做一次)
 login()  # 這會提示你輸入 token，或者你可以傳入 token 參數
 
-sg_lang_model = SgLangModel("llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token-V2")
+sg_lang_model = SgLangModel(model_name="llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token-V2")
 
 model, tokenizer = sg_lang_model.build_raw_model()
 
