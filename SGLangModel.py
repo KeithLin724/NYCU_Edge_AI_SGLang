@@ -1,5 +1,6 @@
 import openai
 import requests
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 class SgLangModel:
@@ -33,3 +34,8 @@ class SgLangModel:
         url = f"{self._heard_url}/generate"
         response = requests.post(url, json=json_data)
         return response
+
+    def build_raw_model(self, **kwargs):
+        model = AutoModelForCausalLM.from_pretrained(self._model_name, **kwargs)
+        tokenizer = AutoTokenizer.from_pretrained(self._model_name)
+        return model, tokenizer
