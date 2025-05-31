@@ -1,9 +1,9 @@
 # Sample Code : https://github.com/vllm-project/llm-compressor/blob/main/examples/quantization_w8a8_int8/README.md
-# SparseGPT: https://github.com/vllm-project/llm-compressor/blob/main/examples/sparse_2of4_quantization_fp8/llama3_8b_2of4.py
+
 # %%
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
+MODEL_ID = "llama-3.2-1b-KD-V1"
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_ID,
     device_map="auto",
@@ -69,25 +69,13 @@ print(type(ds[0]["input_ids"]))
 from llmcompressor import oneshot
 from llmcompressor.modifiers.quantization import GPTQModifier
 from llmcompressor.modifiers.smoothquant import SmoothQuantModifier
-from llmcompressor.modifiers.obcq import SparseGPTModifier
 
 # Configure the quantization algorithms to run.
 recipe = [
-    SparseGPTModifier(
-        sparsity=0.5,
-        mask_structure="2:4",
-        sequential_update=True,
-        targets=[r"re:model.layers.\d*$"],
-    ),
-    GPTQModifier(targets="Linear", scheme="W4A16", ignore=["lm_head"]),
+    SmoothQuantModifier(smoothing_strength=0.8),
+    GPTQModifier(targets="Linear", scheme="W8A8", ignore=["lm_head"]),
 ]
-
-
 # %%
-
-model_dir = MODEL_ID.split("/")[1] + "-W4A16-Dynamic-Per-Token-SparseGPT"
-
-
 # Apply quantization.
 oneshot(
     model=model,
@@ -95,11 +83,12 @@ oneshot(
     recipe=recipe,
     max_seq_length=MAX_SEQUENCE_LENGTH,
     num_calibration_samples=len(ds),
-    output_dir=model_dir,  # No need to save the model yet
+    output_dir=MODEL_ID
+    + "-W8A8-Dynamic-Per-Token-One",  # No need to save the model yet
 )
 # %%
 # Save to disk compressed.
-SAVE_DIR = f"{model_dir}-V2"
+SAVE_DIR = MODEL_ID + "-W8A8-Dynamic-Per-Token-V2"
 tokenizer.save_pretrained(SAVE_DIR)
 model.save_pretrained(SAVE_DIR, save_compressed=True)
 
