@@ -1,7 +1,9 @@
+# Sample Code : https://github.com/vllm-project/llm-compressor/blob/main/examples/quantization_w8a8_int8/README.md
+
 # %%
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-MODEL_ID = "meta-llama/Meta-Llama-3-8B-Instruct"
+MODEL_ID = "meta-llama/Llama-3.2-3B-Instruct"
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_ID,
     device_map="auto",
@@ -12,42 +14,55 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
 # %%
 
 from datasets import load_dataset
+import torch
 
 NUM_CALIBRATION_SAMPLES = 512
 MAX_SEQUENCE_LENGTH = 2048
-
+# %%
 # Load dataset.
 ds = load_dataset(
     "wikitext", "wikitext-2-raw-v1", split=f"train[:{NUM_CALIBRATION_SAMPLES}]"
 )
 ds = ds.shuffle(seed=42)
 
-
-# Preprocess the data into the format the model is trained with.
-def preprocess(example):
-    return {
-        "text": tokenizer.apply_chat_template(
-            example["messages"],
-            tokenize=False,
-        )
-    }
+# Filter out samples with empty text
+ds = ds.filter(lambda example: len(example["text"]) > 0)
 
 
-ds = ds.map(preprocess)
+print(ds)
 
 
 # Tokenize the data (be careful with bos tokens - we need add_special_tokens=False since the chat_template already added it).
 def tokenize(sample):
-    return tokenizer(
+    tokenized = tokenizer(
         sample["text"],
         padding=False,
         max_length=MAX_SEQUENCE_LENGTH,
         truncation=True,
         add_special_tokens=False,
     )
+    return {
+        "input_ids": torch.tensor(tokenized["input_ids"], dtype=torch.long),
+        "attention_mask": torch.tensor(tokenized["attention_mask"], dtype=torch.long),
+    }
 
+
+# %%
 
 ds = ds.map(tokenize, remove_columns=ds.column_names)
+
+ds.set_format(
+    type="torch",
+    # columns=["input_ids", "attention_mask"],
+    # output_all_columns=True,
+)
+
+
+# %%
+print(ds)
+print(ds[0])
+print(ds[0]["input_ids"])
+print(type(ds[0]["input_ids"]))
 
 # %%
 
@@ -60,16 +75,16 @@ recipe = [
     SmoothQuantModifier(smoothing_strength=0.8),
     GPTQModifier(targets="Linear", scheme="W8A8", ignore=["lm_head"]),
 ]
-
+# %%
 # Apply quantization.
 oneshot(
     model=model,
     dataset=ds,
     recipe=recipe,
     max_seq_length=MAX_SEQUENCE_LENGTH,
-    num_calibration_samples=NUM_CALIBRATION_SAMPLES,
+    num_calibration_samples=len(ds),
 )
-
+# %%
 # Save to disk compressed.
 SAVE_DIR = MODEL_ID.split("/")[1] + "-W8A8-Dynamic-Per-Token"
 model.save_pretrained(SAVE_DIR, save_compressed=True)
