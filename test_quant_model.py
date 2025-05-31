@@ -3,11 +3,10 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
 # Choose a model from Hugging Face Hub
-model_name = "./Llama-3.2-3B-Instruct-W8A8-Dynamic-Per-Token"
-model_name_tokenizer = "meta-llama/Llama-3.2-3B-Instruct"
+model_name = "./Llama-3.2-3B-Instruct-W8A8-Dynamic-Per-Token-One"
 
 # Load model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained(model_name_tokenizer)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
 # Prepare a dummy input
