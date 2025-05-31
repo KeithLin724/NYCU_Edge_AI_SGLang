@@ -79,7 +79,7 @@ print(response.json())
 
 from SGLangModel import SgLangModel
 
-model = SgLangModel()
+model = SgLangModel(model_name="Llama-3.2-3B-Instruct-W8A8-Dynamic-Per-Token-V2")
 
 response = model.openai_request(
     prompt="List 3 countries and their capitals.",
