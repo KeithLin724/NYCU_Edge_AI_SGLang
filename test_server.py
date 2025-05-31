@@ -60,3 +60,46 @@ if "meta_info" in result and "prompt_logprobs" in result["meta_info"]:
     print("Logprobs:", logprobs)
 
 # %%
+import requests
+from rich import print
+
+response = requests.post(
+    "http://localhost:30000/generate",
+    json={
+        "text": "The capital of France is",
+        "sampling_params": {
+            "temperature": 0,
+            "max_new_tokens": 32,
+        },
+    },
+)
+print(response.json())
+
+# %%
+
+from SGLangModel import SgLangModel
+
+model = SgLangModel()
+
+response = model.openai_request(
+    prompt="List 3 countries and their capitals.",
+    temperature=0.0,
+    max_tokens=256,
+)
+print(response.choices[0].message.content)
+# %%
+tokens = response.usage.total_tokens
+print(f"Total tokens: {tokens}")
+
+response = model.python_request(
+    json_data={
+        "text": "The capital of France is",
+        "sampling_params": {
+            "temperature": 0,
+            "max_new_tokens": 32,
+        },
+    }
+)
+print(response.json())
+# %%
+print(response.status_code)
