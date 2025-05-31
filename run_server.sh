@@ -1,4 +1,4 @@
-# refenence : https://docs.sglang.ai/backend/quantization.html
+# reference : https://docs.sglang.ai/backend/quantization.html
 
 python3 -m sglang.launch_server --model-path Llama-3.2-3B-Instruct-W8A8-Dynamic-Per-Token-V2 \
  --tp 2 \
