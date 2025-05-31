@@ -96,8 +96,8 @@ def main():
 
     ### === TODO: Load your model (you may change this part) ===
     # model_name = "Llama-3.2-3B-Instruct-W8A8-Dynamic-Per-Token-One"
-    # model_name = "llama-3.2-1b-KD-V1"
-    model_name = "meta-llama/Llama-3.2-1B-Instruct"
+    model_name = "llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token-V2"
+    # model_name = "meta-llama/Llama-3.2-1B-Instruct"
     # model = AutoModelForCausalLM.from_pretrained(
     #     model_name,
     #     # device_map="auto",
