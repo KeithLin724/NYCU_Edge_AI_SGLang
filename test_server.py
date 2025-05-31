@@ -88,6 +88,8 @@ response = model.openai_request(
 )
 print(response.choices[0].message.content)
 # %%
+print(response.usage.total_tokens)
+# %%
 tokens = response.usage.total_tokens
 print(f"Total tokens: {tokens}")
 
