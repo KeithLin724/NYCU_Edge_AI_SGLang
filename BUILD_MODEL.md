@@ -19,7 +19,7 @@ See instructions: [build_small_model/README.md](./build_small_model/README.md)
 After obtaining the model, run the following command to quantize it to W8A8 int8:
 
 ```sh
-python compress_int_1b.py
+python compress_to_int8.py --model_name <model_name_or_path>
 ```
 
 ---
