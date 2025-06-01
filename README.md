@@ -26,17 +26,22 @@ conda activate edge_ai_sglang_stable
 To install CUDA Toolkit (includes `nvcc`) on Ubuntu 22.04, run:
 
 ```sh
-# Download the CUDA keyring for package authentication
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+# Download the CUDA repository pin file for package priority
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
 
-# Install the keyring
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
+# Download and install the CUDA repository local installer
+wget https://developer.download.nvidia.com/compute/cuda/12.9.0/local_installers/cuda-repo-ubuntu2204-12-9-local_12.9.0-575.51.03-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2204-12-9-local_12.9.0-575.51.03-1_amd64.deb
 
-# Update the package list
+# Add the CUDA GPG key to your system keyring
+sudo cp /var/cuda-repo-ubuntu2204-12-9-local/cuda-*-keyring.gpg /usr/share/keyrings/
+
+# Update package lists
 sudo apt-get update
 
-# Install the full CUDA Toolkit (includes nvcc)
-sudo apt-get -y install cuda
+# Install CUDA Toolkit 12.9 (includes nvcc)
+sudo apt-get -y install cuda-toolkit-12-9
 ```
 
 ---
@@ -149,3 +154,4 @@ For any questions, please open an issue or contact the project maintainer.
 - [llm-compressor](https://github.com/vllm-project/llm-compressor/tree/main)
 - [TorchTune](https://github.com/pytorch/torchtune)
 - [TorchTune/configs](https://github.com/pytorch/torchtune/tree/main/recipes/configs)
+- [NVCC](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local)
