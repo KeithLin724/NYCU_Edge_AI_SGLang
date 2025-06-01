@@ -89,7 +89,7 @@ def evaluate_ppl(model, tokenizer, device="cuda:0"):
 @click.command()
 @click.option(
     "--model_name",
-    default="llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token",
+    default="KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token",
     help="Name of the model to load.",
 )
 def main(model_name: str):
