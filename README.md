@@ -6,6 +6,12 @@ This project is for the NYCU Edge AI final, focusing on LLM quantization and per
 
 ---
 
+## Download Repo
+
+```sh
+git clone https://github.com/KeithLin724/NYCU_Edge_AI_SGLang.git
+```
+
 ## Environment Setup
 
 Make sure you have Conda installed. Create the environment with:
