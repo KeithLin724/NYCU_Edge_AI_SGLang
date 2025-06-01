@@ -50,7 +50,11 @@ You have three options to obtain and prepare the model:
 If you have downloaded the non-quantized model, you can quantize it to INT8 by running:
 
 ```sh
-python compress_int8.py
+# Quantize the default model (meta-llama/Llama-3.2-3B-Instruct)
+python compress_to_int8.py
+
+# Or, quantize a custom model by specifying the model name or path
+# python compress_to_int8.py --model_name <model_name_or_path>
 ```
 
 The quantized model will be saved to a new directory for further use or uploading to Hugging Face.
