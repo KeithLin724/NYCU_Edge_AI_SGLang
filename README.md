@@ -17,13 +17,43 @@ conda activate edge_ai_sglang
 
 ## How to Run Experiments
 
-### 1. Quantize the Model
+### 1. Get the Model
 
-Run the following command to quantize the model to INT8:
+You have three options to obtain and prepare the model:
+
+#### 1. Download the pre-quantized (W8A8 INT8) model
+
+- **Model link:** [KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token](https://huggingface.co/KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token)
+- **How to build it yourself:** See [BUILD_MODEL.md](./BUILD_MODEL.md)
+- **Download with script:**
+
+    ```sh
+    python get_1b_model_int8.py
+    ```
+
+---
+
+#### 2. Download the non-quantized (FP16) model
+
+- **Model link:** [hlhsiao/llama-3.2-1b-KD-V1](https://huggingface.co/hlhsiao/llama-3.2-1b-KD-V1)
+- **How to build it yourself:** See [build_small_model/README.md](./build_small_model/README.md)
+- **Download with script:**
+
+    ```sh
+    python get_1b_model.py
+    ```
+
+---
+
+#### 3. Quantize the non-quantized model to INT8
+
+If you have downloaded the non-quantized model, you can quantize it to INT8 by running:
 
 ```sh
 python compress_int8.py
 ```
+
+The quantized model will be saved to a new directory for further use or uploading to Hugging Face.
 
 ---
 
