@@ -5,6 +5,8 @@ from tqdm.auto import tqdm
 from datasets import load_dataset
 import random
 import numpy as np
+import click
+
 
 from SGLangModel import SgLangModel
 
@@ -86,7 +88,13 @@ def evaluate_ppl(model, tokenizer, device="cuda:0"):
     return ppl.item()
 
 
-def main():
+@click.command()
+@click.option(
+    "--model_name",
+    default="llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token",
+    help="Model name to load.",
+)
+def main(model_name: str):
     ############## Set Up ##############
     torch.manual_seed(0)
     random.seed(0)
@@ -96,7 +104,7 @@ def main():
 
     ### === TODO: Load your model (you may change this part) ===
     # model_name = "Llama-3.2-3B-Instruct-W8A8-Dynamic-Per-Token-One"
-    model_name = "llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token-V2"
+    # model_name = "llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token-V2"
     # model_name = "meta-llama/Llama-3.2-1B-Instruct"
     # model = AutoModelForCausalLM.from_pretrained(
     #     model_name,
