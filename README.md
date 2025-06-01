@@ -10,7 +10,7 @@ Make sure you have Conda installed. Create the environment with:
 
 ```sh
 conda env create -f environment.yml
-conda activate edge_ai_sglang
+conda activate edge_ai_sglang_stable
 ```
 
 ---
@@ -28,7 +28,7 @@ You have three options to obtain and prepare the model:
 - **Download with script:**
 
     ```sh
-    python get_1b_model_int8.py
+    python get_preprocess_model.py --quant
     ```
 
 ---
@@ -40,7 +40,7 @@ You have three options to obtain and prepare the model:
 - **Download with script:**
 
     ```sh
-    python get_1b_model.py
+    python get_preprocess_model.py
     ```
 
 ---
