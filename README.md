@@ -21,6 +21,24 @@ conda env create -f environment.yml
 conda activate edge_ai_sglang_stable
 ```
 
+### CUDA & NVCC Installation
+
+To install CUDA Toolkit (includes `nvcc`) on Ubuntu 22.04, run:
+
+```sh
+# Download the CUDA keyring for package authentication
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+
+# Install the keyring
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+
+# Update the package list
+sudo apt-get update
+
+# Install the full CUDA Toolkit (includes nvcc)
+sudo apt-get -y install cuda
+```
+
 ---
 
 ## How to Run Experiments
@@ -44,7 +62,7 @@ You have three options to obtain and prepare the model:
 #### 2. Download the non-quantized (FP16) model
 
 - **Model link:** [hlhsiao/llama-3.2-1b-KD-V1](https://huggingface.co/hlhsiao/llama-3.2-1b-KD-V1)
-- **How to build it yourself:** See [build_small_model/README.md](./build_small_model/README.md)
+- **How to build it yourself:** See [build_small_model](./build_small_model)
 - **Download with script:**
 
     ```sh
