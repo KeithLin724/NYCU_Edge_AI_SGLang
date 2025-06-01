@@ -2,6 +2,8 @@
 
 This project implements knowledge distillation from a larger language model (teacher) to a smaller model (student) using the TorchTune framework.
 
+> Pre-build model : <https://huggingface.co/hlhsiao/llama-3.2-1b-KD-V1>
+
 ## Environment Setup
 
 1. Create a new conda environment using the provided `environment.yml`:
