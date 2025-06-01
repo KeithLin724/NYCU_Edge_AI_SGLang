@@ -95,7 +95,6 @@ def main(model_name: str):
         output_dir=output_path,  # No need to save the model yet
     )
 
-    print(model)
     print(f"Quantization completed. Model saved to {output_path}.")
     return
 
