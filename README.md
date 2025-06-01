@@ -109,9 +109,11 @@ python result-quant.py
 
 ## Notes
 
-- Results will be saved to `result_tput.csv` and `result_ppl.csv`.
-- You can modify model or dataset parameters at the top of each script.
-- If you encounter CUDA out-of-memory errors, try reducing the batch size or sequence length.
+- Experiment results will be saved as `result_tput.csv` (throughput) and `result_ppl.csv` (perplexity).
+- You can adjust model or dataset parameters at the top of each script to suit your needs.
+- If you encounter CUDA out-of-memory errors:
+  - Try reducing the batch size or sequence length.
+  - You can also tune server flags in `run_server.sh` for better memory management. See the [SG-Lang hyperparameter tuning guide](https://docs.sglang.ai/backend/hyperparameter_tuning.html) for more details.
 
 ---
 
