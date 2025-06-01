@@ -101,4 +101,4 @@ dependencies:
       - urllib3==2.4.0
       - xxhash==3.5.0
       - yarl==1.20.0
-prefix: /nfs/home/hsiao618/miniconda3/envs/torchtune_reproduce
+prefix: /nfs/home/hsiao618/miniconda3/envs/torchtune
