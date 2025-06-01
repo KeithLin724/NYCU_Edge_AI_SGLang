@@ -62,13 +62,21 @@ The quantized model will be saved to a new directory for further use or uploadin
 1. Start the SG-Lang server:
 
     ```sh
+    # Start the SG-Lang server with the default pre-built model (auto-download if not present)
     sh run_server.sh
+
+    # Or, specify a custom model path or Hugging Face repo
+    # sh run_server.sh <model_name_or_path>
     ```
 
 2. Run the throughput test script:
 
     ```sh
+    # Run throughput test with the default pre-built model
     python result-quant-sglang.py
+
+    # Or, specify a custom model path or Hugging Face repo
+    # python result-quant-sglang.py --model_name <model_name_or_path>
     ```
 
 ---
@@ -78,7 +86,11 @@ The quantized model will be saved to a new directory for further use or uploadin
 > **Note:** Please shut down the SG-Lang server before running this step.
 
 ```sh
+# Run perplexity (PPL) test with the default pre-built model
 python result-quant.py
+
+# Or, specify a custom model path or Hugging Face repo
+# python result-quant.py --model_name <model_name_or_path>
 ```
 
 ---
