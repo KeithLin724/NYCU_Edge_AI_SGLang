@@ -16,4 +16,4 @@ model = PeftModel.from_pretrained(base_model, "<YOUR_OUTPUT_DIR>/epoch_0")
 model = model.merge_and_unload()
 
 tokenizer.save_pretrained("<YOUR_MERGED_MODEL_PATH>")
-model.save_pretrained("YOUR_MERGED_MODEL_PATH")
+model.save_pretrained("<YOUR_MERGED_MODEL_PATH>")
