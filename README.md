@@ -2,6 +2,8 @@
 
 This project is for the NYCU Edge AI final, focusing on LLM quantization and performance evaluation with SGLang server.
 
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Anaconda](https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)![nVIDIA](https://img.shields.io/badge/cuda-000000.svg?style=for-the-badge&logo=nVIDIA&logoColor=green)
+
 ---
 
 ## Environment Setup
@@ -109,9 +111,15 @@ python result-quant.py
 
 For any questions, please open an issue or contact the project maintainer.
 
+## Model
+
+[meta-llama/Llama-3.2-3B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct), [meta-llama/Llama-3.2-1B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)
+
 ## Reference
 
 - [SG-Lang](https://docs.sglang.ai/)
 - [SG-Lang Github](https://github.com/sgl-project/sglang?tab=readme-ov-file)
 - [SGLang 推理引擎技术解析](https://zhuanlan.zhihu.com/p/30886364337)
 - [llm-compressor](https://github.com/vllm-project/llm-compressor/tree/main)
+- [TorchTune](https://github.com/pytorch/torchtune)
+- [TorchTune/configs](https://github.com/pytorch/torchtune/tree/main/recipes/configs)
