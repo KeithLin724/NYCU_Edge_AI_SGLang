@@ -48,37 +48,21 @@ sudo apt-get -y install cuda-toolkit-12-9
 
 ## How to Run Experiments
 
-### 1. Get the Model
+### 1. Prepare the Model
 
-#### Step 1: Download the base model
+#### Option 1: Download Pre-built Model
 
-You can obtain the student model in one of two ways:
-
-1. **Direct download from Hugging Face:**
-   - **Model link:** [hlhsiao/llama-3.2-1b-KD-V1](https://huggingface.co/hlhsiao/llama-3.2-1b-KD-V1)
-   - **Download with script:**
-     ```sh
-     python get_preprocess_model.py
-     ```
-
-2. **Build it yourself:**
-   - Follow the instructions in [build_small_model/README.md](./build_small_model/README.md)
-
-#### Step 2: Quantize the model to INT8
-
-After obtaining the FP16 student model, quantize it to INT8 by running:
+You can quickly get started by using the pre-built, quantized model.  
+Simply run the following command to automatically download and load the stable model for your experiments:
 
 ```sh
-# Quantize the model (hlhsiao/llama-3.2-1b-KD-V1)
-python compress_to_int8.py --model_name hlhsiao/llama-3.2-1b-KD-V1
-
-# Or, quantize a custom model by specifying the model name or path
-# python compress_to_int8.py --model_name <model_name_or_path>
+sh run_server.sh
 ```
 
-The quantized model will be saved to a new directory for further use.
+#### Option 2: Build the Model from Scratch
 
-> **Note:** If you want to skip the quantization step, we also provide a pre-quantized (W8A8 INT8) model at [KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token](https://huggingface.co/KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token). However, we recommend following the steps above to ensure reproducibility.
+If you prefer to build the model yourself (e.g., for custom training or quantization),  
+please refer to the detailed instructions in [`BUILD_MODEL.md`](./BUILD_MODEL.md).
 
 ---
 
