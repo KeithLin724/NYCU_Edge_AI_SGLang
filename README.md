@@ -50,45 +50,35 @@ sudo apt-get -y install cuda-toolkit-12-9
 
 ### 1. Get the Model
 
-You have three options to obtain and prepare the model:
+#### Step 1: Download the base model
 
-#### 1. Download the pre-quantized (W8A8 INT8) model
+You can obtain the student model in one of two ways:
 
-- **Model link:** [KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token](https://huggingface.co/KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token)
-- **How to build it yourself:** See [BUILD_MODEL.md](./BUILD_MODEL.md)
-- **Download with script:**
+1. **Direct download from Hugging Face:**
+   - **Model link:** [hlhsiao/llama-3.2-1b-KD-V1](https://huggingface.co/hlhsiao/llama-3.2-1b-KD-V1)
+   - **Download with script:**
+     ```sh
+     python get_preprocess_model.py
+     ```
 
-    ```sh
-    python get_preprocess_model.py --quant
-    ```
+2. **Build it yourself:**
+   - Follow the instructions in [build_small_model/README.md](./build_small_model/README.md)
 
----
+#### Step 2: Quantize the model to INT8
 
-#### 2. Download the non-quantized (FP16) model
-
-- **Model link:** [hlhsiao/llama-3.2-1b-KD-V1](https://huggingface.co/hlhsiao/llama-3.2-1b-KD-V1)
-- **How to build it yourself:** See [build_small_model](./build_small_model)
-- **Download with script:**
-
-    ```sh
-    python get_preprocess_model.py
-    ```
-
----
-
-#### 3. Quantize the non-quantized model to INT8
-
-If you have downloaded the non-quantized model, you can quantize it to INT8 by running:
+After obtaining the FP16 student model, quantize it to INT8 by running:
 
 ```sh
-# Quantize the default model (meta-llama/Llama-3.2-3B-Instruct)
-python compress_to_int8.py
+# Quantize the model (hlhsiao/llama-3.2-1b-KD-V1)
+python compress_to_int8.py --model_name hlhsiao/llama-3.2-1b-KD-V1
 
 # Or, quantize a custom model by specifying the model name or path
 # python compress_to_int8.py --model_name <model_name_or_path>
 ```
 
-The quantized model will be saved to a new directory for further use or uploading to Hugging Face.
+The quantized model will be saved to a new directory for further use.
+
+> **Note:** If you want to skip the quantization step, we also provide a pre-quantized (W8A8 INT8) model at [KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token](https://huggingface.co/KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token). However, we recommend following the steps above to ensure reproducibility.
 
 ---
 
@@ -97,7 +87,7 @@ The quantized model will be saved to a new directory for further use or uploadin
 1. Start the SG-Lang server:
 
     ```sh
-    # Start the SG-Lang server with the default pre-built model (auto-download if not present)
+    # Start the SG-Lang server with the default pre-built model (KYLiN724/llama-3.2-1b-KD-V1-W8A8-Dynamic-Per-Token)
     sh run_server.sh
 
     # Or, specify a custom model path or Hugging Face repo
